@@ -221,3 +221,19 @@ button {
         font-size: 12px;
     }
 }
+
+@media (max-width: 768px) {
+    .galeria-container {
+        flex-direction: column; /* Ajusta a galeria para empilhar as imagens verticalmente em telas menores */
+    }
+
+    .gallery-item {
+        height: auto;
+    }
+
+    #toggleAutoSlide {
+        width: 100%;
+        padding: 15px;
+        font-size: 18px;
+    }
+}
