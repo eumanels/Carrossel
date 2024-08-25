@@ -1,11 +1,13 @@
 body{
+    font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    width: 100%;
+    box-sizing: border-box;
     display: flex;
-    flex-direction: row;
+    justify-content: center;
     align-items: center;
-    background: linear-gradient(180deg, rgb(236, 213, 232) 0%, rgb(50, 112, 118) 100%);
+    height: 100vh; /* 100% da altura da viewport */
+    background-color: rgb(212, 212, 212); /* Cor de fundo */
 }
 
 .galeria{
@@ -38,7 +40,7 @@ body{
     transform: translateX(-50%);
 }
 
-.gallery-item-2, .gallery-item-6{
+.gallery-item-2, .gallery-item-4{
     height: 250px;
     opacity: 0.8;
     width: 380px;
@@ -66,7 +68,7 @@ body{
 }
 
 .gallery-item-5{
-    left: 100%;
+    left: 85%;
     opacity: .4;
     transform: translateX(-50%);
 }
@@ -102,7 +104,7 @@ body{
     position: relative;
 }
 
-.galeria-control-button::before{
+.galeria-control-previous::before{
     border: solid #000;
     border-width: 0 5px 5px 0;
     content: '';
@@ -134,7 +136,7 @@ body{
     padding: 10px;
     position: absolute;
     right: -30px;
-    top: 45;
+    top: 45%;
     transform: rotate(-45deg) translateY(-50%);
     transition: right 0.15s ease-in-out;
     width: 5px;
@@ -171,30 +173,50 @@ body {
     font-size: 16px;
 }
 
-
-@media (max-width: 768px) {
-    body {
-        font-size: 14px;
-    }
-
-    .container {
-        width: 100%;
-    }
-}
-
-
-@media (max-width: 480px) {
-    .container {
-        padding: 10px;
-    }
-
-    .header {
-        font-size: 18px;
-    }
-}
-
 img {
     max-width: 100%;
     height: auto;
 }
 
+button {
+    margin: 5px;
+}
+
+#toggleAutoSlide {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007BFF;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#toggleAutoSlide:hover {
+    background-color: #0056b3;
+}
+
+@media (max-width: 768px) {
+    .gallery-item {
+        max-width: 100%;
+    }
+
+    #toggleAutoSlide {
+        width: 90%;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .galeria-control button {
+        padding: 8px;
+        font-size: 16px;
+    }
+    
+    #toggleAutoSlide {
+        font-size: 12px;
+    }
+}

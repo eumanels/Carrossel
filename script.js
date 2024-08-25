@@ -2,7 +2,7 @@ const galeriaContainer = document.querySelector('.galeria-container');
 const galeriaControlContainer = document.querySelector('.galeria-control');
 const galeriaControl = ['previous', 'next'];
 const galleryItems = document.querySelectorAll('.gallery-item');
-
+const toggleAutoSlideButton = document.getElementById('toggleAutoSlide');
 
 class Carrossel {
     constructor(container, items, controls) {
@@ -10,10 +10,33 @@ class Carrossel {
         this.carrosselControls = controls;
         this.carrosselArray = [...items];
         this.mySlideInterval = null;
+        this.isAutoSliding = true;  // Flag para controle do auto-slide
+
+        this.startAutoSlide();  // Inicia o auto-slide
+    }
+
+    startAutoSlide() {
+        if (this.mySlideInterval) clearInterval(this.mySlideInterval);
         this.mySlideInterval = setInterval(
             this.autoSlide.bind(this),
             5000
         );
+    }
+
+    stopAutoSlide() {
+        clearInterval(this.mySlideInterval);
+        this.mySlideInterval = null;
+    }
+
+    toggleAutoSlide() {
+        if (this.isAutoSliding) {
+            this.stopAutoSlide();
+            toggleAutoSlideButton.textContent = 'Ativar Auto Slide';
+        } else {
+            this.startAutoSlide();
+            toggleAutoSlideButton.textContent = 'Desativar Auto Slide';
+        }
+        this.isAutoSliding = !this.isAutoSliding;
     }
 
     autoSlide() {
@@ -43,13 +66,10 @@ class Carrossel {
             this.carrosselArray.push(this.carrosselArray.shift());
         }
 
-        clearInterval(this.mySlideInterval);
+        if (this.isAutoSliding) this.startAutoSlide();  // Reinicia o intervalo se estiver em auto-slide
         this.updateGallery();
-        this.mySlideInterval = setInterval(
-            this.autoSlide.bind(this),
-            5000
-        );
     }
+
     setControls() {
         this.carrosselControls.forEach(controls => {
             galeriaControlContainer.appendChild(document.createElement('button')).className = `galeria-control-${controls}`;
@@ -62,26 +82,15 @@ class Carrossel {
         triggers.forEach(controls => {
             controls.addEventListener('click', e => {
                 e.preventDefault();
-
-                if (controls.className == 'galeria-Control-add') {
-                    const newItem = document.createElement('img');
-                    const latestItem = this.carrosselArray.length;
-                    const latestIndex = this.carrosselArray.findIndex(item => item.getAttribute('data-index') == this.carrosselArray.length)+1;
-          
-                    Object.assign(newItem,{
-                      className: 'gallery-item',
-                      src: `http://fakeimg.pl/300/?text=${this.carrosselArray.length+1}`
-                    });
-                    newItem.setAttribute('data-index', this.carrosselArray.length+1);
-          
-                    this.carrosselArray.splice(latestIndex, 0, newItem);
-                    document.querySelector(`[data-index="${latestItem}"]`).after(newItem);
-                    this.updateGallery();
-          
-                  } else {
+                if (controls.className === 'galeria-control-previous' || controls.className === 'galeria-control-next') {
                     this.setCurrentState(controls);
-                  }
+                }
             });
+        });
+
+        // Adiciona o evento para o botão de ativar/desativar auto-slide
+        toggleAutoSlideButton.addEventListener('click', () => {
+            this.toggleAutoSlide();
         });
     }
 }
